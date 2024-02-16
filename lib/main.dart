@@ -1,4 +1,4 @@
-import 'package:aviation_project/splashscreen.dart';
+import 'package:aviation_project/ui/splashscreen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -13,9 +13,36 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Aviation',
       theme: ThemeData(
+        textTheme: const TextTheme(
+          headlineLarge: TextStyle(
+              color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+          bodyMedium: TextStyle(
+            color: Colors.black,
+            fontSize: 20,
+          ),
+          bodyLarge: TextStyle(
+            color: Colors.black,
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
+          titleMedium: TextStyle(
+            color: Colors.grey,
+            fontSize: 22,
+          ),
+          titleSmall: TextStyle(
+            color: Colors.grey,
+            fontSize: 22,
+            fontWeight: FontWeight.bold,
+          ),
+          titleLarge: TextStyle(
+            color: Colors.black,
+            fontSize: 28,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
         primarySwatch: Colors.lightBlue,
       ),
-      home: SplashScreen(),
+      home: const SplashScreen(),
     );
   }
 }
