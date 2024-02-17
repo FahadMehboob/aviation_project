@@ -1,3 +1,4 @@
+import 'package:aviation_project/ui/auth/login_screen.dart';
 import 'package:aviation_project/widgets/circular_button.dart';
 import 'package:aviation_project/widgets/reusable_text.dart';
 import 'package:flutter/material.dart';
@@ -27,13 +28,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const ReusableTitle(title: "Create an Account"),
-              Padding(
-                padding: const EdgeInsets.only(top: 10),
-                child: Text(
-                  "Book your next adventure with us!",
-                  style: Theme.of(context).textTheme.titleSmall,
-                ),
-              ),
+              const ReusableSubTitle(
+                  subTitle: "Book your next adventure with us!"),
               const ReusableLabel(labelText: "Name"),
               TextFormField(
                 keyboardType: TextInputType.name,
@@ -101,11 +97,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     },
                     child: isVisible
                         ? const Icon(
-                            Icons.visibility_outlined,
+                            Icons.visibility_off_outlined,
                             size: 30,
                           )
                         : const Icon(
-                            Icons.visibility_off_outlined,
+                            Icons.visibility_outlined,
                             size: 30,
                           ),
                   ),
@@ -144,11 +140,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
               const SizedBox(
                 height: 10,
               ),
-              const CircularButton(btnText: "Sign In With Phone Number"),
+              const CircularButton(btnText: "Sign Up With Phone Number"),
               const SizedBox(
                 height: 20,
               ),
-              const ReusableRow(
+              ReusableRow(
+                textBtnTitle: "Sign Up",
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const LoginScreen(),
+                      ));
+                },
                 textTitle: "Already have an Account ?",
               ),
             ],

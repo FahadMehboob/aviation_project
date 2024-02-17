@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 
 class ReusableRow extends StatelessWidget {
-  final String textTitle;
-  const ReusableRow({super.key, required this.textTitle});
+  final VoidCallback onTap;
+  final String textTitle, textBtnTitle;
+  const ReusableRow(
+      {super.key,
+      required this.textTitle,
+      required this.onTap,
+      required this.textBtnTitle});
 
   @override
   Widget build(BuildContext context) {
@@ -15,10 +20,10 @@ class ReusableRow extends StatelessWidget {
           style: Theme.of(context).textTheme.titleMedium,
         ),
         TextButton(
-          onPressed: () {},
-          child: const Text(
-            "Sign In",
-            style: TextStyle(fontSize: 22),
+          onPressed: onTap,
+          child: Text(
+            textBtnTitle,
+            style: const TextStyle(fontSize: 22),
           ),
         )
       ],
