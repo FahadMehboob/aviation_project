@@ -2,20 +2,24 @@ import 'package:flutter/material.dart';
 
 class CircularButton extends StatelessWidget {
   final String btnText;
-  const CircularButton({super.key, required this.btnText});
+  final VoidCallback onTap;
+  const CircularButton({super.key, required this.btnText, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 50,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        color: Colors.lightBlue,
-      ),
-      child: Center(
-        child: Text(
-          btnText,
-          style: Theme.of(context).textTheme.headlineLarge,
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        height: 50,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color: Colors.lightBlue,
+        ),
+        child: Center(
+          child: Text(
+            btnText,
+            style: Theme.of(context).textTheme.headlineLarge,
+          ),
         ),
       ),
     );

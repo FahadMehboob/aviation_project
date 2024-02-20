@@ -1,4 +1,6 @@
 import 'package:aviation_project/ui/auth/login_screen.dart';
+import 'package:aviation_project/ui/auth/phone_login.dart';
+import 'package:aviation_project/ui/homescreen.dart';
 import 'package:aviation_project/widgets/circular_button.dart';
 import 'package:aviation_project/widgets/reusable_text.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +15,7 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
-  bool isVisible = false;
+  bool isVisible = true;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -110,7 +112,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
               const SizedBox(
                 height: 30,
               ),
-              const CircularButton(btnText: "Sign Up"),
+              CircularButton(
+                btnText: "Sign Up",
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const HomeScreen(),
+                      ));
+                },
+              ),
               Row(
                 children: [
                   const Expanded(
@@ -140,12 +151,21 @@ class _SignUpScreenState extends State<SignUpScreen> {
               const SizedBox(
                 height: 10,
               ),
-              const CircularButton(btnText: "Sign Up With Phone Number"),
+              CircularButton(
+                btnText: "Sign Up With Phone Number",
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const PhoneLogin(),
+                      ));
+                },
+              ),
               const SizedBox(
                 height: 20,
               ),
               ReusableRow(
-                textBtnTitle: "Sign Up",
+                textBtnTitle: "Login",
                 onTap: () {
                   Navigator.push(
                       context,

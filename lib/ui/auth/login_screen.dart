@@ -1,4 +1,7 @@
+import 'package:aviation_project/ui/auth/forget_password.dart';
+import 'package:aviation_project/ui/auth/phone_login.dart';
 import 'package:aviation_project/ui/auth/signup_screen.dart';
+import 'package:aviation_project/ui/homescreen.dart';
 import 'package:aviation_project/widgets/circular_button.dart';
 import 'package:aviation_project/widgets/reusable_text.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +16,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  bool isVisible = false;
+  bool isVisible = true;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -91,7 +94,13 @@ class _LoginScreenState extends State<LoginScreen> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const ForgetPassword(),
+                            ));
+                      },
                       child: const Text(
                         "Forget Password?",
                         style: TextStyle(fontSize: 18),
@@ -101,7 +110,16 @@ class _LoginScreenState extends State<LoginScreen> {
               const SizedBox(
                 height: 30,
               ),
-              const CircularButton(btnText: "Sign In"),
+              CircularButton(
+                btnText: "Sign In",
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const HomeScreen(),
+                      ));
+                },
+              ),
               Row(
                 children: [
                   const Expanded(
@@ -131,7 +149,16 @@ class _LoginScreenState extends State<LoginScreen> {
               const SizedBox(
                 height: 10,
               ),
-              const CircularButton(btnText: "Sign In With Phone Number"),
+              CircularButton(
+                btnText: "Sign In With Phone Number",
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const PhoneLogin(),
+                      ));
+                },
+              ),
               const SizedBox(
                 height: 40,
               ),
