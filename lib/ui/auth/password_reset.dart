@@ -32,7 +32,7 @@ class _PasswordResetState extends State<PasswordReset> {
               const ReusableTitle(title: "Reset Password"),
               const ReusableSubTitle(
                   subTitle:
-                      "Enter your email address to get the password reset link"),
+                      "Enter your new password twice below to reset a new password"),
               const SizedBox(
                 height: 40,
               ),
