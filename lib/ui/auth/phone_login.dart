@@ -1,5 +1,4 @@
-import 'package:aviation_project/ui/auth/password_reset.dart';
-import 'package:aviation_project/ui/homescreen.dart';
+import 'package:aviation_project/ui/auth/otp_screen.dart';
 import 'package:aviation_project/widgets/circular_button.dart';
 import 'package:aviation_project/widgets/reusable_text.dart';
 import 'package:country_picker/country_picker.dart';
@@ -148,7 +147,7 @@ class _PhoneNumberLoginState extends State<PhoneNumberLogin> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const HomeScreen(),
+                          builder: (context) => const OtpScreen(),
                         ));
                   }),
             ],
