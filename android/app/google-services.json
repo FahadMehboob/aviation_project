@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "516346071617",
+    "project_id": "aviation-project-46322",
+    "storage_bucket": "aviation-project-46322.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:516346071617:android:24f3935bc74de2f34a14c0",
+        "android_client_info": {
+          "package_name": "com.example.aviation_project"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDbqpdoGTvn-GpdbjZGLHx5WPFdJ7zNOJQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

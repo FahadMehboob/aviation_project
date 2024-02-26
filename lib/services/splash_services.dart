@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:aviation_project/ui/auth/signup_screen.dart';
+import 'package:aviation_project/ui/auth/login_screen.dart';
 import 'package:flutter/material.dart';
 
 class SplashServices {
@@ -8,7 +8,7 @@ class SplashServices {
       Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => const SignUpScreen(),
+            builder: (context) => const LoginScreen(),
           ));
     });
   }

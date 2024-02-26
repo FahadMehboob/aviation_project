@@ -53,6 +53,7 @@ class _OtpScreenState extends State<OtpScreen> {
                 height: 60,
               ),
               Pinput(
+                autofocus: true,
                 errorPinTheme: PinTheme(
                   height: 60,
                   width: 60,

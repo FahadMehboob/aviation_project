@@ -16,7 +16,18 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final _formKey = GlobalKey<FormState>();
   bool isVisible = true;
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,61 +44,89 @@ class _LoginScreenState extends State<LoginScreen> {
               const ReusableTitle(title: "Login"),
               const ReusableSubTitle(
                   subTitle: "Welcome back! Let's get started."),
-              const ReusableLabel(labelText: "Email Address"),
-              TextFormField(
-                keyboardType: TextInputType.emailAddress,
-                style: Theme.of(context).textTheme.bodyMedium,
-                decoration: InputDecoration(
-                  hintText: "hello@example.com",
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                    borderSide: const BorderSide(color: Colors.grey),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                    borderSide: const BorderSide(color: Colors.lightBlue),
-                  ),
-                  errorBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                    borderSide: const BorderSide(color: Colors.red),
-                  ),
-                ),
-              ),
-              const ReusableLabel(labelText: "Password"),
-              TextFormField(
-                obscureText: isVisible,
-                keyboardType: TextInputType.emailAddress,
-                style: Theme.of(context).textTheme.bodyMedium,
-                decoration: InputDecoration(
-                  hintText: "************",
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                    borderSide: const BorderSide(color: Colors.grey),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                    borderSide: const BorderSide(color: Colors.lightBlue),
-                  ),
-                  errorBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                    borderSide: const BorderSide(color: Colors.red),
-                  ),
-                  suffixIcon: InkWell(
-                    onTap: () {
-                      setState(() {
-                        isVisible = !isVisible;
-                      });
-                    },
-                    child: isVisible
-                        ? const Icon(
-                            Icons.visibility_off_outlined,
-                            size: 30,
-                          )
-                        : const Icon(
-                            Icons.visibility_outlined,
-                            size: 30,
-                          ),
-                  ),
+              Form(
+                key: _formKey,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const ReusableLabel(labelText: "Email Address"),
+                    TextFormField(
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return "Email can't be Empty";
+                        }
+                      },
+                      controller: emailController,
+                      keyboardType: TextInputType.emailAddress,
+                      style: Theme.of(context).textTheme.bodyMedium,
+                      decoration: InputDecoration(
+                        errorStyle: const TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 14),
+                        hintText: "hello@example.com",
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: const BorderSide(color: Colors.grey),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: const BorderSide(color: Colors.lightBlue),
+                        ),
+                        focusedErrorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: const BorderSide(color: Colors.red),
+                        ),
+                        errorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: const BorderSide(color: Colors.red),
+                        ),
+                      ),
+                    ),
+                    const ReusableLabel(labelText: "Password"),
+                    TextFormField(
+                      controller: passwordController,
+                      obscureText: isVisible,
+                      keyboardType: TextInputType.text,
+                      style: Theme.of(context).textTheme.bodyMedium,
+                      decoration: InputDecoration(
+                        errorStyle: const TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 14),
+                        hintText: "************",
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: const BorderSide(color: Colors.grey),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: const BorderSide(color: Colors.lightBlue),
+                        ),
+                        focusedErrorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: const BorderSide(color: Colors.red),
+                        ),
+                        errorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: const BorderSide(color: Colors.red),
+                        ),
+                        suffixIcon: InkWell(
+                          onTap: () {
+                            setState(() {
+                              isVisible = !isVisible;
+                            });
+                          },
+                          child: isVisible
+                              ? const Icon(
+                                  Icons.visibility_off_outlined,
+                                  size: 30,
+                                )
+                              : const Icon(
+                                  Icons.visibility_outlined,
+                                  size: 30,
+                                ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
               Row(
@@ -113,11 +152,12 @@ class _LoginScreenState extends State<LoginScreen> {
               CircularButton(
                 btnText: "Sign In",
                 onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const HomeScreen(),
-                      ));
+                  if (_formKey.currentState!.validate()) {}
+                  // Navigator.push(
+                  //     context,
+                  //     MaterialPageRoute(
+                  //       builder: (context) => const HomeScreen(),
+                  //     ));
                 },
               ),
               Row(
