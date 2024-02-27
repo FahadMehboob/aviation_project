@@ -5,8 +5,9 @@ import 'package:aviation_project/ui/homescreen.dart';
 import 'package:aviation_project/widgets/circular_button.dart';
 import 'package:aviation_project/widgets/reusable_text.dart';
 import 'package:flutter/material.dart';
-
+import '../../widgets/reusable_outlineborder.dart';
 import '../../widgets/reusable_row.dart';
+import 'auth_validator.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -52,62 +53,33 @@ class _LoginScreenState extends State<LoginScreen> {
                   children: [
                     const ReusableLabel(labelText: "Email Address"),
                     TextFormField(
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return "Email can't be Empty";
-                        }
-                      },
+                      validator: (value) => Validator.validateEmail(value),
                       controller: emailController,
                       keyboardType: TextInputType.emailAddress,
                       style: Theme.of(context).textTheme.bodyMedium,
                       decoration: InputDecoration(
-                        errorStyle: const TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 14),
+                        errorStyle: CustomStyles.errorTextStyle(),
                         hintText: "hello@example.com",
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: const BorderSide(color: Colors.grey),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: const BorderSide(color: Colors.lightBlue),
-                        ),
-                        focusedErrorBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: const BorderSide(color: Colors.red),
-                        ),
-                        errorBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: const BorderSide(color: Colors.red),
-                        ),
+                        enabledBorder: CustomBorders.enabledBorder(),
+                        focusedBorder: CustomBorders.focusedBorder(),
+                        focusedErrorBorder: CustomBorders.focusedErrorBorder(),
+                        errorBorder: CustomBorders.errorBorder(),
                       ),
                     ),
                     const ReusableLabel(labelText: "Password"),
                     TextFormField(
+                      validator: (value) => Validator.validatePassword(value),
                       controller: passwordController,
                       obscureText: isVisible,
                       keyboardType: TextInputType.text,
                       style: Theme.of(context).textTheme.bodyMedium,
                       decoration: InputDecoration(
-                        errorStyle: const TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 14),
+                        errorStyle: CustomStyles.errorTextStyle(),
                         hintText: "************",
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: const BorderSide(color: Colors.grey),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: const BorderSide(color: Colors.lightBlue),
-                        ),
-                        focusedErrorBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: const BorderSide(color: Colors.red),
-                        ),
-                        errorBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: const BorderSide(color: Colors.red),
-                        ),
+                        enabledBorder: CustomBorders.enabledBorder(),
+                        focusedBorder: CustomBorders.focusedBorder(),
+                        focusedErrorBorder: CustomBorders.focusedErrorBorder(),
+                        errorBorder: CustomBorders.errorBorder(),
                         suffixIcon: InkWell(
                           onTap: () {
                             setState(() {
@@ -152,12 +124,13 @@ class _LoginScreenState extends State<LoginScreen> {
               CircularButton(
                 btnText: "Sign In",
                 onTap: () {
-                  if (_formKey.currentState!.validate()) {}
-                  // Navigator.push(
-                  //     context,
-                  //     MaterialPageRoute(
-                  //       builder: (context) => const HomeScreen(),
-                  //     ));
+                  if (_formKey.currentState!.validate()) {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const HomeScreen(),
+                        ));
+                  }
                 },
               ),
               Row(
