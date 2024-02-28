@@ -1,3 +1,4 @@
+import 'package:aviation_project/Utils/utils.dart';
 import 'package:aviation_project/ui/auth/auth_validator.dart';
 import 'package:aviation_project/ui/auth/login_screen.dart';
 import 'package:aviation_project/ui/auth/phone_login.dart';
@@ -25,6 +26,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController passwordController = TextEditingController();
 
   bool isVisible = true;
+  bool loading = false;
 
   @override
   void dispose() {
@@ -127,33 +129,31 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 height: 30,
               ),
               CircularButton(
+                loading: loading,
                 btnText: "Sign Up",
                 onTap: () async {
                   if (_formKey.currentState!.validate()) {
+                    setState(() {
+                      loading = true;
+                    });
                     try {
-                      // Create user with email and password
-                      final UserCredential userCredential =
-                          await _auth.createUserWithEmailAndPassword(
-                        email: emailController.text.toString(),
-                        password: passwordController.text.toString(),
+                      await _auth.createUserWithEmailAndPassword(
+                        email: emailController.text.trim(),
+                        password: passwordController.text.trim(),
                       );
-
-                      // Send email verification
-                      await userCredential.user!.sendEmailVerification();
-
-                      // Navigate to home screen after successful registration
-                      if (context.mounted) {
-                        return;
-                      }
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const HomeScreen(),
-                        ),
+                      setState(() {
+                        Utils().toastMessage(
+                          "User Registered Successfully",
+                        );
+                        loading = false;
+                      });
+                    } catch (error) {
+                      Utils().toastMessage(
+                        error.toString(),
                       );
-                    } catch (e) {
-                      // Handle any registration errors here
-                      print("Error: $e");
+                      setState(() {
+                        loading = false;
+                      });
                     }
                   }
                 },

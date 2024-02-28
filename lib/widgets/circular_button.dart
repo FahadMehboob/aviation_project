@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 
 class CircularButton extends StatelessWidget {
   final String btnText;
+  final bool loading;
   final VoidCallback onTap;
 
   const CircularButton({
     super.key,
     required this.btnText,
+    this.loading = false,
     required this.onTap,
   });
 
@@ -21,10 +23,14 @@ class CircularButton extends StatelessWidget {
           color: Colors.lightBlue,
         ),
         child: Center(
-          child: Text(
-            btnText,
-            style: Theme.of(context).textTheme.headlineLarge,
-          ),
+          child: loading
+              ? const CircularProgressIndicator(
+                  color: Colors.white,
+                )
+              : Text(
+                  btnText,
+                  style: Theme.of(context).textTheme.headlineLarge,
+                ),
         ),
       ),
     );
