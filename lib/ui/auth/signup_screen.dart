@@ -1,10 +1,11 @@
+import 'dart:async';
 import 'package:aviation_project/Utils/utils.dart';
 import 'package:aviation_project/ui/auth/auth_validator.dart';
 import 'package:aviation_project/ui/auth/login_screen.dart';
 import 'package:aviation_project/ui/auth/phone_login.dart';
-
 import 'package:aviation_project/widgets/circular_button.dart';
 import 'package:aviation_project/widgets/reusable_text.dart';
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../../widgets/reusable_outlineborder.dart';
@@ -24,6 +25,59 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  late Timer _timer;
+
+  void _clearFormFields() {
+    emailController.clear();
+    passwordController.clear();
+    usernameController.clear();
+  }
+
+  void _checkEmailVerification() {
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        icon: const Icon(
+          Icons.mark_email_read_outlined,
+          size: 80,
+          color: Colors.blue,
+        ),
+        title: Text(
+          'Email Sent',
+          textAlign: TextAlign.center,
+          style: Theme.of(context).textTheme.titleLarge,
+        ),
+        content: Text(
+          'Please verify your email to proceed.',
+          textAlign: TextAlign.start,
+          style: Theme.of(context).textTheme.titleSmall,
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: const Text('OK'),
+          ),
+        ],
+      ),
+    );
+
+    // Start a timer to check email verification status periodically
+    _timer = Timer.periodic(const Duration(seconds: 2), (timer) {
+      _auth.currentUser!.reload();
+      if (_auth.currentUser!.emailVerified) {
+        // Navigate to home screen
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const HomeScreen(),
+          ),
+        );
+        _timer.cancel(); // Stop the timer once email is verified
+      }
+    });
+  }
 
   bool isVisible = true;
   bool loading = false;
@@ -133,27 +187,47 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 btnText: "Sign Up",
                 onTap: () async {
                   if (_formKey.currentState!.validate()) {
-                    setState(() {
-                      loading = true;
-                    });
                     try {
-                      await _auth.createUserWithEmailAndPassword(
-                        email: emailController.text.trim(),
-                        password: passwordController.text.trim(),
-                      );
-                      setState(() {
+                      await _auth
+                          .createUserWithEmailAndPassword(
+                        email: emailController.text.toString(),
+                        password: passwordController.text.toString(),
+                      )
+                          .then((value) async {
                         Utils().toastMessage(
-                          "User Registered Successfully",
+                          context,
+                          'User Registered Successfully',
+                          ContentType.success,
+                          'Welcome',
                         );
-                        loading = false;
+                        await _auth.currentUser!.sendEmailVerification();
                       });
+                      _checkEmailVerification();
+                      _clearFormFields();
                     } catch (error) {
+                      String errorMessage = 'An error occurred';
+                      if (error is FirebaseAuthException) {
+                        switch (error.code) {
+                          case 'email-already-in-use':
+                            errorMessage =
+                                'The email address is already in use';
+                            break;
+                          case 'invalid-email':
+                            errorMessage = 'Invalid email address';
+                            break;
+                          case 'weak-password':
+                            errorMessage = 'The password is too weak';
+                            break;
+                          default:
+                            errorMessage = 'Authentication failed';
+                        }
+                      }
                       Utils().toastMessage(
-                        error.toString(),
+                        context,
+                        errorMessage,
+                        ContentType.failure,
+                        'On Snap!',
                       );
-                      setState(() {
-                        loading = false;
-                      });
                     }
                   }
                 },
