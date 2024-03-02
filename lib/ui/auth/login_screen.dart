@@ -158,7 +158,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ],
               ),
-              const CircularGoogleButton(),
+              CircularGoogleButton(),
               const SizedBox(
                 height: 10,
               ),

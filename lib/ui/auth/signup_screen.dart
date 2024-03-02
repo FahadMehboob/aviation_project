@@ -257,7 +257,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                 ],
               ),
-              const CircularGoogleButton(),
+              CircularGoogleButton(),
               const SizedBox(
                 height: 10,
               ),
