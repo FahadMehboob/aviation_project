@@ -4,7 +4,10 @@ import 'package:aviation_project/ui/auth/signup_screen.dart';
 import 'package:aviation_project/ui/homescreen.dart';
 import 'package:aviation_project/widgets/circular_button.dart';
 import 'package:aviation_project/widgets/reusable_text.dart';
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import '../../Utils/utils.dart';
 import '../../widgets/reusable_outlineborder.dart';
 import '../../widgets/reusable_row.dart';
 import 'auth_validator.dart';
@@ -17,16 +20,63 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  Future<void> signInUser({
+    required String email,
+    required String password,
+    required NavigatorState navigatorState,
+  }) async {
+    try {
+      await _auth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      navigatorState.push(
+        MaterialPageRoute(
+          builder: (context) => const HomeScreen(),
+        ),
+      );
+    } catch (error) {
+      String errorMessage = 'An error occurred during sign-in';
+      if (error is FirebaseAuthException) {
+        switch (error.code) {
+          case 'user-not-found':
+            errorMessage = 'No user found with this email';
+            break;
+          case 'wrong-password':
+            errorMessage = 'Incorrect password';
+            break;
+          case 'invalid-email':
+            errorMessage = 'Invalid email address';
+            break;
+          default:
+            errorMessage = 'Sign-in failed';
+        }
+      }
+      Utils().toastMessage(
+        navigatorState.context,
+        errorMessage,
+        ContentType.failure,
+        'Oops!',
+      );
+    }
+  }
+
   final _formKey = GlobalKey<FormState>();
   bool isVisible = true;
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  final _auth = FirebaseAuth.instance;
 
   @override
   void dispose() {
     emailController.dispose();
     passwordController.dispose();
     super.dispose();
+  }
+
+  void _clearFormFields() {
+    emailController.clear();
+    passwordController.clear();
   }
 
   @override
@@ -123,13 +173,14 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               CircularButton(
                 btnText: "Sign In",
-                onTap: () {
+                onTap: () async {
                   if (_formKey.currentState!.validate()) {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const HomeScreen(),
-                        ));
+                    await signInUser(
+                      email: emailController.text.toString(),
+                      password: passwordController.text.toString(),
+                      navigatorState: Navigator.of(context),
+                    );
+                    _clearFormFields();
                   }
                 },
               ),
